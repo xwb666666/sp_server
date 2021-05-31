@@ -1,0 +1,5 @@
+spring:
+  application:
+    name: guns-cloud-order
+  profiles:
+    active: @spring.active@

@@ -1,0 +1,60 @@
+server:
+  port: 9000
+
+spring:
+  cloud:
+    nacos:
+      discovery:
+        server-addr: 1.15.178.196:8848
+        watch-delay: 2000
+    # sentinel 监控
+    sentinel:
+      transport:
+        dashboard: 1.15.178.196:8080
+    gateway:
+      routes:
+        - id: cloud-system
+          uri: lb://guns-cloud-system
+          predicates:
+            - Path=/guns-cloud-system/api/**
+          filters:
+            - RewritePath=/guns-cloud-system/(?<segment>.*), /$\{segment}
+
+        - id: guns-cloud-auth
+          uri: lb://guns-cloud-auth
+          predicates:
+            - Path=/guns-cloud-auth/api/**
+          filters:
+            - RewritePath=/guns-cloud-auth/(?<segment>.*), /$\{segment}
+
+        # product商品服务
+        - id: guns-cloud-product
+          uri: lb://guns-cloud-product
+          predicates:
+            - Path=/guns-cloud-product/api/**
+          filters:
+            - RewritePath=/guns-cloud-product/(?<segment>.*), /$\{segment}
+
+        # member会员服务
+        - id: guns-cloud-member
+          uri: lb://guns-cloud-member
+          predicates:
+            - Path=/guns-cloud-member/api/**
+          filters:
+            - RewritePath=/guns-cloud-member/(?<segment>.*), /$\{segment}
+
+        # order 订单服务
+        - id: guns-cloud-order
+          uri: lb://guns-cloud-order
+          predicates:
+            - Path=/guns-cloud-order/api/**
+          filters:
+            - RewritePath=/guns-cloud-order/(?<segment>.*), /$\{segment}
+
+        # 支付服务 支付服务
+        - id: guns-cloud-payment
+          uri: lb://guns-cloud-payment
+          predicates:
+            - Path=/guns-cloud-payment/api/**
+          filters:
+            - RewritePath=/guns-cloud-payment/(?<segment>.*), /$\{segment}

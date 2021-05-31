@@ -1,0 +1,138 @@
+version: "3.7"
+
+services:
+
+  # min-io文件系统
+  guns-cloud-minio:
+    image: minio/minio
+    container_name: guns-cloud-minio
+    ports:
+      - "9000:9000"
+    restart: always
+    environment:
+      MINIO_ACCESS_KEY: admin
+      MINIO_SECRET_KEY: abcd1234
+    volumes:
+      - /data:/data
+    command: server /data
+    networks:
+      - back-tier
+
+  # redis基础服务
+  guns-cloud-redis:
+    image: redis:4.0
+    container_name: guns-cloud-redis
+    ports:
+      - "6379:6379"
+    restart: always
+    networks:
+      - back-tier
+    depends_on:
+      - "guns-cloud-minio"
+
+  # mysql基础服务
+  guns-cloud-mysql:
+    build: ./1.guns-cloud-mysql
+    image: guns-cloud-mysql
+    container_name: guns-cloud-mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+    ports:
+      - "3306:3306"
+    restart: always
+    networks:
+      - back-tier
+    depends_on:
+      - "guns-cloud-redis"
+
+  # 注册中心
+  guns-cloud-nacos:
+    build: ./2.guns-cloud-nacos
+    image: guns-cloud-nacos
+    container_name: guns-cloud-nacos
+    ports:
+      - "8848:8848"
+    restart: always
+    networks:
+      - back-tier
+    depends_on:
+      - "guns-cloud-mysql"
+
+  # 后端应用(系统管理)
+  guns-cloud-system:
+    build: ./3.guns-cloud-system
+    image: guns-cloud-system
+    container_name: guns-cloud-system
+    ports:
+      - "8001:8001"
+    restart: always
+    networks:
+      - back-tier
+    volumes:
+      - ./wait-for-it.sh:/usr/local/bin/wait-for-it.sh
+    depends_on:
+      - "guns-cloud-nacos"
+
+  # 网关
+  guns-cloud-gateway:
+    build: ./4.guns-cloud-gateway
+    image: guns-cloud-gateway
+    container_name: guns-cloud-gateway
+    ports:
+      - "8000:8000"
+    restart: always
+    networks:
+      - back-tier
+    volumes:
+      - ./wait-for-it.sh:/usr/local/bin/wait-for-it.sh
+    depends_on:
+      - "guns-cloud-system"
+
+  # 统一认证中心
+  guns-cloud-auth:
+    build: ./5.guns-cloud-auth
+    image: guns-cloud-auth
+    container_name: guns-cloud-auth
+    ports:
+      - "8888:8888"
+    restart: always
+    networks:
+      - back-tier
+    volumes:
+      - ./wait-for-it.sh:/usr/local/bin/wait-for-it.sh
+    depends_on:
+      - "guns-cloud-gateway"
+
+  # 工作流系统
+  guns-cloud-workflow:
+    build: ./7.guns-cloud-workflow
+    image: guns-cloud-workflow
+    container_name: guns-cloud-workflow
+    ports:
+      - "8003:8003"
+    restart: always
+    networks:
+      - back-tier
+    volumes:
+      - ./wait-for-it.sh:/usr/local/bin/wait-for-it.sh
+    depends_on:
+      - "guns-cloud-auth"
+
+  # nginx
+  nginx:
+    build: ../_webs
+    image: guns-nginx
+    container_name: nginx
+    ports:
+      - "9501:9501"
+      - "9502:9502"
+      - "9503:9503"
+    restart: always
+    networks:
+      - back-tier
+    depends_on:
+      - "guns-cloud-workflow"
+
+networks:
+  back-tier:
+

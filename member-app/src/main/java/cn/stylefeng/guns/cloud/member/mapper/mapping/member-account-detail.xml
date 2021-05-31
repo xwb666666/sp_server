@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.stylefeng.guns.cloud.member.mapper.GunsMemAccountDetailMapper">
+
+    <select id="getSelect" resultType="cn.stylefeng.guns.cloud.api.member.model.result.GunsMemAccountDetailResult" parameterType="cn.stylefeng.guns.cloud.api.member.model.params.GunsMemAccountDetailParam">
+
+        SELECT guns_mem_member.*,guns_mem_account.*,guns_mem_account_detail.* FROM guns_mem_member,guns_mem_account,guns_mem_account_detail
+        <where>
+
+            guns_mem_member.id=guns_mem_account.member_id and guns_mem_member.id=guns_mem_account_detail.member_id
+
+            <if test="param.memberId !=null">
+
+                and guns_mem_member.id = #{param.memberId}
+            </if>
+
+        </where>
+
+
+    </select>
+
+
+
+</mapper>

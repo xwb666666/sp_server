@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.stylefeng.guns.cloud.member.mapper.GunsTaskMapper">
+
+    <resultMap id="baseResultMap" type="cn.stylefeng.guns.cloud.member.model.GunsTask">
+        <id column="id" property="id" />
+        <result column="task_name" property="taskName" />
+        <result column="task_type" property="taskType" />
+        <result column="reward" property="reward" />
+        <result column="url" property="url" />
+        <result column="pic" property="pic" />
+        <result column="sort" property="sort" />
+        <result column="status" property="status" />
+        <result column="memo" property="memo" />
+        <result column="create_date" property="createDate" />
+        <result column="end_date" property="endDate" />
+    </resultMap>
+<!--    <resultMap id="resultMap" extends="baseResultMap" type="cn.stylefeng.guns.cloud.member.model.api.result.TaskResult">-->
+<!--        <collection property="taskMembers" ofType="cn.stylefeng.guns.cloud.member.model.api.result.TaskMemberResult">-->
+<!--            <id column="task_id" property="id"></id>-->
+<!--            <result column="member_id" property="memberId"></result>-->
+<!--            <result column="task_id" property="taskId"></result>-->
+<!--            <result column="status" property="status"></result>-->
+<!--            <result column="create_date" property="createDate"></result>-->
+<!--            <result column="complete_date" property="completeDate"></result>-->
+<!--        </collection>-->
+<!--    </resultMap>-->
+
+    <sql id="Base_Column_List">
+        id, `task_name`, task_type, reward, url, pic, sort, status, memo, create_date, end_date
+    </sql>
+    <sql id="Master_List">
+        a.id, a.task_name, a.task_type, a.reward, a.url, a.pic, a.sort, a.status, a.memo, a.create_date, a.end_date
+    </sql>
+    <sql id="Join_List">
+        b.id, b.member_id, b.task_id, b.status, b.create_date, b.complete_date
+    </sql>
+
+<!--    <select id="uncompletedTasks" >;-->
+
+<!--    </select>-->
+
+</mapper>

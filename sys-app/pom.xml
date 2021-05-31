@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <parent>
+        <groupId>cn.stylefeng.guns</groupId>
+        <artifactId>guns-cloud-parent</artifactId>
+        <version>1.0</version>
+    </parent>
+
+    <artifactId>sys-app</artifactId>
+
+    <packaging>jar</packaging>
+
+    <dependencies>
+        <!--guns-cloud通用核心包-->
+        <dependency>
+            <groupId>cn.stylefeng.guns</groupId>
+            <artifactId>common-core</artifactId>
+            <version>1.0</version>
+        </dependency>
+
+        <!--系统管理api-->
+        <dependency>
+            <groupId>cn.stylefeng.guns</groupId>
+            <artifactId>sys-api</artifactId>
+            <version>1.0</version>
+        </dependency>
+
+        <!--商品api-->
+        <dependency>
+            <groupId>cn.stylefeng.guns</groupId>
+            <artifactId>common-api</artifactId>
+            <version>1.0</version>
+        </dependency>
+
+        <!--缓存-->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-data-redis</artifactId>
+        </dependency>
+
+        <!--拼音转汉子-->
+        <dependency>
+            <groupId>com.belerweb</groupId>
+            <artifactId>pinyin4j</artifactId>
+            <version>2.5.0</version>
+        </dependency>
+
+        <!--MinIo-->
+        <dependency>
+            <groupId>io.minio</groupId>
+            <artifactId>minio</artifactId>
+        </dependency>
+        <!-- 腾讯云cos-->
+        <dependency>
+            <groupId>com.qcloud</groupId>
+            <artifactId>cos_api</artifactId>
+            <version>5.6.38</version>
+        </dependency>
+        <!-- 腾讯短信通道sdk-->
+        <dependency>
+            <groupId>com.tencentcloudapi</groupId>
+            <artifactId>tencentcloud-sdk-java</artifactId>
+            <version>3.1.62</version>
+        </dependency>
+
+    </dependencies>
+
+    <build>
+        <finalName>${project.artifactId}</finalName>
+        <plugins>
+            <plugin>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-maven-plugin</artifactId>
+            </plugin>
+            <plugin>
+                <groupId>io.fabric8</groupId>
+                <artifactId>docker-maven-plugin</artifactId>
+                <version>0.26.1</version>
+                <configuration>
+                    <dockerHost>unix:///var/run/docker.sock</dockerHost>
+                    <images>
+                        <image>
+                            <name>snexus.stylefeng.cn:6001/${project.artifactId}:${docker.img.version}</name>
+                            <build>
+                                <from>java:8</from>
+                                <assembly>
+                                    <descriptor>docker-assembly.xml</descriptor>
+                                </assembly>
+                                <cmd>
+                                    <shell>java -agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=50551 -jar -Xms128m -Xmx128m -Xss1024K -XX:MetaspaceSize=128m -XX:MaxMetaspaceSize=128m /maven/${project.artifactId}.jar</shell>
+                                </cmd>
+                            </build>
+                        </image>
+                    </images>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
+
+</project>

@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.stylefeng.guns.cloud.product.mapper.BrowseMapper">
+
+    <select id="selectList" resultType="cn.stylefeng.guns.cloud.product.model.api.result.BrowseResult" parameterType="cn.stylefeng.guns.cloud.product.model.api.param.BrowseParam">
+        select guns_pro_product.picture,guns_pro_product.`name`,guns_pro_product.des,guns_pro_product.original_price,guns_pro_product.present_price,guns_pro_browse.id,date_format(guns_pro_browse.create_time, '%Y-%m-%d')AS create_time
+        from guns_pro_product  JOIN guns_pro_browse  on guns_pro_product.id =guns_pro_browse.product_id
+        <where>
+            guns_pro_browse.member_id=#{param.memberId}
+            order by guns_pro_browse.create_time desc
+        </where>
+
+
+    </select>
+
+</mapper>

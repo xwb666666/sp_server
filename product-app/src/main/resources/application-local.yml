@@ -1,0 +1,68 @@
+server:
+  port: 8002
+
+elasticsearch:
+  host: 1.15.178.196
+  port: 9200
+
+spring:
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://1.15.178.196:3306/hc_cloud_product?autoReconnect=true&useUnicode=true&characterEncoding=utf8&zeroDateTimeBehavior=convertToNull&useSSL=false&serverTimezone=CTT
+    username: hc_cloud_product
+    password: sBxksHESFNytXLPC
+  redis:
+    host: 1.15.178.196
+    port: 6379
+    password: 888888
+  cloud:
+    nacos:
+      discovery:
+#        server-addr: 1.15.178.196:8848
+        server-addr: 192.168.0.114:8848
+        enabled: true
+        register-enabled: true
+        watch-delay: 1000
+  #配置rabbitMq 服务器
+#  rabbitmq:
+#    host: 1.15.178.196
+#    host: 127.0.0.1
+#    port: 5672
+#    username: root
+#    password: root
+#    virtual-host: hc
+#    listener:
+#      simple:
+#        acknowledge-mode: manual
+#        concurrency: 3
+#        max-concurrency: 10
+
+
+mybatis-plus:
+  mapper-locations:
+    - classpath*:cn/stylefeng/guns/cloud/product/**/mapping/*.xml
+  configuration:
+    map-underscore-to-camel-case: true
+    lazy-loading-enabled: true
+    multiple-result-sets-enabled: true
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+  global-config:
+    banner: false
+    db-config:
+      id-type: assign_id
+      table-underline: true
+#roses:
+#  scanner:
+#    app-code: guns-cloud-product
+#    app-name: 商品服务
+#    open: true
+#  tenant:
+#    open: false
+
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"
+

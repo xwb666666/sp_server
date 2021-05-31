@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.stylefeng.guns.product.mapper.GunsCouponsMapper">
+
+    <resultMap id="BaseResultMap" type="cn.stylefeng.guns.cloud.product.model.api.GunsCoupons">
+        <id column="id" property="id" />
+        <result column="name" property="name" />
+        <result column="type" property="type" />
+        <result column="pic" property="pic" />
+        <result column="amount" property="amount" />
+        <result column="discount" property="discount" />
+        <result column="total_count" property="totalCount" />
+        <result column="pick_count" property="pickCount" />
+        <result column="max_pick_count" property="maxPickCount" />
+        <result column="valid_amount" property="validAmount" />
+        <result column="is_can_pick" property="isCanPick" />
+        <result column="expire_type" property="expireType" />
+        <result column="fixed_date" property="fixedDate" />
+        <result column="expire_days" property="expireDays" />
+        <result column="product_type" property="productType" />
+        <result column="memo" property="memo" />
+        <result column="end_time" property="endTime" />
+        <result column="create_time" property="createTime" />
+        <result column="status" property="status" />
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        id, name, type, pic, amount, discount, total_count, pick_count, max_pick_count, valid_amount, is_can_pick, expire_type, fixed_date, expire_days, product_type, memo, end_time, create_time, status
+    </sql>
+
+<!--    <select id="notUseList" resultType="cn.stylefeng.guns.cloud.product.model.api.result.CouponsResult" parameterType="cn.stylefeng.guns.cloud.product.model.api.result.CouponsResult">-->
+<!--        select guns_pro_product.picture,guns_pro_product.`name`,guns_pro_product.des,guns_pro_product.original_price,guns_pro_product.present_price,guns_pro_collect.id-->
+<!--        from guns_pro_product  JOIN guns_pro_collect  on guns_pro_product.id =guns_pro_collect.product_id-->
+<!--        <where>-->
+<!--            guns_pro_collect.member_id=#{param.memberId}-->
+<!--        </where>-->
+<!--    </select>-->
+
+</mapper>

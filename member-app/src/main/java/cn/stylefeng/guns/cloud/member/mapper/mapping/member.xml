@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.stylefeng.guns.cloud.member.mapper.GunsMemMapper">
+
+    <select id="getPageList" resultType="cn.stylefeng.guns.cloud.member.model.result.GunsMemSelectResult" parameterType="cn.stylefeng.guns.cloud.api.member.model.params.GunsMemberQueryParam">
+        select guns_mem_member.*,guns_mem_account.*,(select name from guns_mem_ranks where id=guns_mem_member.rank_id) as rankName FROM guns_mem_member,guns_mem_account
+        <where>
+            guns_mem_member.id=guns_mem_account.member_id
+            <if test="param.nickName !=null and param.nickName !=''">
+
+                and nick_name like CONCAT(CONCAT('%',#{param.nickName}),'%')
+            </if>
+
+            <if test="param.LoginName !=null and param.LoginName !=''">
+
+                and login_name like CONCAT(CONCAT('%',#{param.LoginName}),'%')
+            </if>
+
+            <if test="param.mobile !=null and param.mobile !=''">
+                and mobile like CONCAT(CONCAT('%',#{param.mobile}),'%')
+            </if>
+
+            <if test="param.gender !=null and param.gender &gt;= 0 and param.gender &lt;= 2">
+                and gender = #{param.gender}
+
+            </if>
+
+            <if test="param.status !=null and param.status &gt;= 0 and param.status &lt;= 1">
+                and status = #{param.status}
+
+            </if>
+
+        </where>
+
+
+    </select>
+
+</mapper>

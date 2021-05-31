@@ -1,0 +1,81 @@
+PUT hc_mall_product
+{
+  "mappings": {
+    "properties": {
+      "id":{
+        "type": "long"
+      },
+      "category_id":{
+        "type": "long"
+      },
+      "brand_id":{
+        "type": "long"
+      },
+      "code":{
+        "type": "keyword"
+      },
+      "name":{
+        "type": "text",
+        "analyzer": "ik_smart"
+      },
+      "cost":{
+        "type":"double"
+      },
+      "original_price":{
+        "type": "double"
+      },
+      "present_price":{
+        "type": "double"
+      },
+      "desc":{
+        "type": "keyword",
+        "analyzer": "ik_smart"
+      },
+      "sales_volume":{
+        "type": "double"
+      },
+      "picture":{
+        "type": "keyword",
+        "index": false
+      },
+      "total_stock":{
+        "type": "double"
+      },
+      "create_time":{
+        "type": "date",
+        "format": "yyyy-MM-dd HH:mm:ss"
+      },
+      "skus":{
+        "type": "nested",
+        "properties": {
+          "skuId":{
+            "type":"long"
+          },
+          "name":{
+            "type":"text",
+            "analyzer": "ik_smart"
+          },
+          "code":{
+             "type":"keywork"
+          },
+          "cost":{
+             "type": "double"
+          },
+          "picture":{
+            "type":"keyword",
+            "index":false
+          },
+          "original_price":{
+            "type":"double"
+          },
+          "present_price":{
+            "type":"double"
+          },
+          "stock":{
+            "type":"double"
+          }
+        }
+      }
+    }
+  }
+}

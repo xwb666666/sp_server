@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.stylefeng.guns.cloud.order.mapper.GunsOrdMapper">
+
+    <select id="selectOrderList" resultType="cn.stylefeng.guns.cloud.order.model.result.OrderResult" parameterType="cn.stylefeng.guns.cloud.order.model.param.OrderListParam">
+
+        SELECT guns_order.* FROM guns_order
+        <where>
+
+            <if test="param.status !=null and param.status &gt;= 0 and param.status &lt;= 6">
+                and guns_order.status=#{param.status}
+
+            </if>
+
+            <if test="param.orderNo !=null and param.orderNo !=''">
+                and guns_order.order_no=#{param.orderNo}
+
+            </if>
+
+            <if test="param.contacts !=null and param.contacts !=''">
+                and guns_order.contacts=#{param.contacts}
+
+            </if>
+
+            <if test="param.mobile !=null and param.mobile !=''">
+                and guns_order.mobile=#{param.mobile}
+
+            </if>
+
+            <if test="param.productName !=null and param.productName !=''">
+                and guns_order_detail.product_name like CONCAT(CONCAT('%',#{param.productName}),'%')
+
+            </if>
+
+        </where>
+
+    </select>
+
+
+
+
+
+    <!-- APP订单列表查询 -->
+    <select id="selectForOrderList" resultType="cn.stylefeng.guns.cloud.order.model.api.result.OrderListResult" parameterType="cn.stylefeng.guns.cloud.order.model.api.param.ApiOrderParam">
+        SELECT guns_order.* FROM guns_order
+        <where>
+            <if test="param.memberId !=null and param.memberId !=''">
+                and guns_order.member_id=#{param.memberId}
+            </if>
+
+            <if test="param.orderType !=null and param.orderType &gt;= 0 and param.orderType &lt;= 2 " >
+                and guns_order.order_type=#{param.orderType}
+            </if>
+
+            <if test="param.status !=null and param.status &gt;= 0 and param.status &lt;= 6">
+                and guns_order.status=#{param.status}
+            </if>
+        </where>
+
+    </select>
+
+</mapper>
+

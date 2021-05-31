@@ -1,0 +1,5 @@
+spring:
+  application:
+    name: guns-cloud-api-gateway
+  profiles:
+    active: @spring.active@

@@ -1,0 +1,90 @@
+server:
+  port: 8000
+
+spring:
+  redis:
+    host: localhost
+    port: 6379
+  main:
+    allow-bean-definition-overriding: true
+  cloud:
+    nacos:
+      discovery:
+        server-addr: localhost:8848
+        watch-delay: 1000
+    # sentinel控制填
+    sentinel:
+      transport:
+        dashboard: localhost:8080
+    gateway:
+      routes:
+        # 系统管理的路由
+        - id: cloud-system
+          uri: lb://guns-cloud-system
+          predicates:
+            - Path=/guns-cloud-system/**
+          filters:
+            - JwtToken
+            - PermissionAuth
+            - RewritePath=/guns-cloud-system/(?<segment>.*), /$\{segment}
+
+        # 文件管理的路由
+        - id: guns-cloud-file
+          uri: lb://guns-cloud-file
+          predicates:
+            - Path=/guns-cloud-file/**
+          filters:
+            - JwtToken
+            - RewritePath=/guns-cloud-file/(?<segment>.*), /$\{segment}
+
+        # auth服务的路由
+        - id: guns-cloud-auth
+          uri: lb://guns-cloud-auth
+          predicates:
+            - Path=/guns-cloud-auth/**
+          filters:
+            - JwtToken
+            - RewritePath=/guns-cloud-auth/(?<segment>.*), /$\{segment}
+
+        # workflow工作流服务
+        - id: guns-cloud-workflow
+          uri: lb://guns-cloud-workflow
+          predicates:
+            - Path=/guns-cloud-workflow/**
+          filters:
+            - JwtToken
+            - RewritePath=/guns-cloud-workflow/(?<segment>.*), /$\{segment}
+
+# 请求鉴权token的密钥，默认过期时间1天，单位：秒
+jwt:
+  secret: HMk60Cww2Z4toC8kS2HDa9j1ObJgGV8a
+  expiration: 86400
+
+ribbon:
+  eager-load:
+    enabled: true
+    clients: guns-cloud-system
+
+feign:
+  sentinel:
+    # 为feign整合sentinel
+    enabled: true
+  client:
+    config:
+      # 全局配置
+      default:
+        # NONE不记录任何日志--BASIC仅请求方法URL,状态码执行时间等--HEADERS在BASIC基础上记录header等--FULL记录所有
+        loggerLevel: full
+  httpclient:
+    # 让feign使用apache httpclient做请求；而不是默认的urlconnection
+    enabled: true
+    # feign的最大连接数
+    max-connections: 200
+    # feign单个路径的最大连接数
+    max-connections-per-route: 50
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"
